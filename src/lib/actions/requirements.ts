@@ -3,7 +3,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { generateRecommendation } from '@/lib/recommendation-engine';
 import { trackEvent } from '@/lib/actions/analytics';
-import type { QuestionnaireData } from '@/types/database';
+import type { QuestionnaireData, Requirement } from '@/types/database';
 
 const isSchemaCacheError = (msg: string) =>
   msg?.includes('schema cache') || msg?.includes('PGRST204');
@@ -138,7 +138,7 @@ async function insertRecommendationViaRest(
   });
 }
 
-export async function getMyRequirements() {
+export async function getMyRequirements(): Promise<{ data: Requirement[]; error: string | null }> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -152,9 +152,10 @@ export async function getMyRequirements() {
     .order('created_at', { ascending: false });
 
   if (error && isSchemaCacheError(error.message)) {
-    return fetchRequirementsViaRest(user.id);
+    const rest = await fetchRequirementsViaRest(user.id);
+    return { data: rest.data as Requirement[], error: rest.error };
   }
-  return { data: data ?? [], error: error?.message ?? null };
+  return { data: (data ?? []) as Requirement[], error: error?.message ?? null };
 }
 
 async function fetchRequirementWithRecViaRest(
