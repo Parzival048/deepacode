@@ -78,6 +78,22 @@ Open [http://localhost:3000](http://localhost:3000).
 - Auth-protected routes via middleware  
 - Admin routes protected in layout (profile.role === 'admin')  
 
+## Deploy on Netlify
+
+The app is configured for Netlify via `netlify.toml` and `@netlify/plugin-nextjs`.
+
+1. **Connect the repo** in Netlify (e.g. from GitHub `Parzival048/deepacode`).
+2. **Set environment variables** in Netlify: Site settings → Environment variables:
+   - `NEXT_PUBLIC_SUPABASE_URL` = `https://otagvwkffmdsjyujaajy.supabase.co`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` = your Supabase anon key
+   - `NEXT_PUBLIC_APP_URL` = your Netlify URL (e.g. `https://your-app.netlify.app`)
+   - Optional: `SUPABASE_SERVICE_ROLE_KEY` for server-side admin actions
+3. **Build** uses `npm run build`; Node 20 is set in `netlify.toml`.
+
+**PostgreSQL (Supabase):** The app talks to your Supabase project via the **Supabase URL + anon key** (REST/Realtime API). The database is the same as your Supabase project (pooler: `aws-1-ap-southeast-2.pooler.supabase.com`). No need to set a raw `DATABASE_URL` unless you add a direct Postgres client (e.g. Prisma). If you do, use the pooler URL and encode `@` in the password as `%40` (e.g. `Parzival@1090` → `Parzival%401090`).
+
+**Supabase Auth:** In Supabase Dashboard → Authentication → URL Configuration, add your Netlify site URL to **Redirect URLs** (e.g. `https://your-app.netlify.app/**`).
+
 ## Stripe
 
 Checkout is wired to `/api/checkout?plan=pro|enterprise`. Replace the placeholder in `src/app/api/checkout/route.ts` with a real Stripe Checkout Session and redirect to `session.url`.
