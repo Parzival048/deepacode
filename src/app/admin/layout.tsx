@@ -23,16 +23,16 @@ export default async function AdminLayout({
   if (profile?.role !== 'admin') redirect('/dashboard');
 
   return (
-    <div className="container py-6">
-      <nav className="mb-8 flex gap-4 border-b pb-4">
+    <div className="container px-4 py-4 sm:py-6">
+      <nav className="mb-6 flex flex-wrap gap-2 border-b pb-4 sm:mb-8 sm:gap-4">
         <Link href="/admin">
-          <Button variant="ghost">Dashboard</Button>
+          <Button variant="ghost" className="min-h-[44px] sm:min-h-9">Dashboard</Button>
         </Link>
         <Link href="/admin/analytics">
-          <Button variant="ghost">Analytics</Button>
+          <Button variant="ghost" className="min-h-[44px] sm:min-h-9">Analytics</Button>
         </Link>
         <Link href="/admin/cloud-services">
-          <Button variant="ghost">Cloud services</Button>
+          <Button variant="ghost" className="min-h-[44px] sm:min-h-9">Cloud services</Button>
         </Link>
       </nav>
       {children}

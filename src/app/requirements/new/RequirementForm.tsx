@@ -61,29 +61,30 @@ export function RequirementForm() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Requirements</CardTitle>
-        <CardDescription>Prompt and questionnaire. All fields optional except at least one.</CardDescription>
+      <CardHeader className="px-4 sm:px-6">
+        <CardTitle className="text-lg sm:text-xl">Requirements</CardTitle>
+        <CardDescription className="text-sm">Prompt and questionnaire. All fields optional except at least one.</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-4 sm:px-6">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="prompt_input">Describe your needs (optional)</Label>
             <textarea
               id="prompt_input"
-              className="flex min-h-[100px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:min-h-[100px]"
               placeholder="e.g. Web app with 10k monthly users, need database and file storage in EU..."
               {...register('prompt_input')}
             />
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="monthly_users">Expected monthly users</Label>
               <Input
                 id="monthly_users"
                 type="number"
                 placeholder="e.g. 10000"
+                className="min-h-[44px]"
                 {...register('monthly_users')}
               />
               {errors.monthly_users && (
@@ -96,6 +97,7 @@ export function RequirementForm() {
                 id="storage_gb"
                 type="number"
                 placeholder="e.g. 100"
+                className="min-h-[44px]"
                 {...register('storage_gb')}
               />
             </div>
@@ -104,7 +106,7 @@ export function RequirementForm() {
           <div className="space-y-2">
             <Label>Compute workload</Label>
             <select
-              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex min-h-[44px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               {...register('compute_workload')}
             >
               <option value="low">Low</option>
@@ -113,12 +115,13 @@ export function RequirementForm() {
             </select>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="budget_range">Budget range (USD/month)</Label>
               <Input
                 id="budget_range"
                 placeholder="e.g. 100-500"
+                className="min-h-[44px]"
                 {...register('budget_range')}
               />
             </div>
@@ -127,6 +130,7 @@ export function RequirementForm() {
               <Input
                 id="region"
                 placeholder="e.g. us-east-1"
+                className="min-h-[44px]"
                 {...register('region')}
               />
             </div>
@@ -137,6 +141,7 @@ export function RequirementForm() {
             <Input
               id="security_level"
               placeholder="e.g. standard, high, compliance"
+              className="min-h-[44px]"
               {...register('security_level')}
             />
           </div>
@@ -145,7 +150,7 @@ export function RequirementForm() {
             <p className="text-sm text-destructive">{submitError}</p>
           )}
 
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button type="submit" className="h-11 w-full min-h-[44px]" disabled={isSubmitting}>
             {isSubmitting ? 'Submitting...' : 'Get recommendation'}
           </Button>
         </form>

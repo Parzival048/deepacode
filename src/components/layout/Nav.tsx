@@ -12,25 +12,25 @@ export async function Nav() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/80 bg-background/80 backdrop-blur-xl">
-      <div className="container flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 font-semibold text-foreground transition-opacity hover:opacity-90">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+      <div className="container flex h-14 min-h-[56px] items-center justify-between gap-3 px-4 sm:h-16 sm:px-6">
+        <Link href="/" className="flex min-w-0 shrink items-center gap-2 font-semibold text-foreground transition-opacity hover:opacity-90">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Cloud className="h-4 w-4" />
           </span>
-          Smart Cloud Advisor
+          <span className="truncate text-sm sm:text-base">Smart Cloud Advisor</span>
         </Link>
-        <nav className="flex items-center gap-1">
+        <nav className="flex shrink-0 flex-wrap items-center justify-end gap-1 sm:gap-2">
           {user ? (
             <>
               <Link
                 href="/dashboard"
-                className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-primary/5 hover:text-foreground"
+                className="rounded-lg px-2.5 py-2.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-primary/5 hover:text-foreground min-h-[44px] min-w-[44px] flex items-center justify-center sm:min-h-0 sm:min-w-0 sm:px-3 sm:py-2 sm:text-sm"
               >
                 Dashboard
               </Link>
               <Link
                 href="/requirements/new"
-                className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-primary/5 hover:text-foreground"
+                className="flex min-h-[44px] min-w-0 items-center justify-center rounded-lg px-2.5 py-2.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-primary/5 hover:text-foreground sm:min-h-0 sm:px-3 sm:py-2 sm:text-sm"
               >
                 New requirement
               </Link>
@@ -39,10 +39,10 @@ export async function Nav() {
           ) : (
             <>
               <Link href="/login">
-                <Button variant="ghost" size="sm" className="rounded-lg font-medium">Log in</Button>
+                <Button variant="ghost" size="sm" className="min-h-[44px] rounded-lg font-medium sm:min-h-9">Log in</Button>
               </Link>
               <Link href="/register">
-                <Button size="sm" className="rounded-lg font-medium shadow-sm">Sign up</Button>
+                <Button size="sm" className="min-h-[44px] rounded-lg font-medium shadow-sm sm:min-h-9">Sign up</Button>
               </Link>
             </>
           )}

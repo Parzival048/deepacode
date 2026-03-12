@@ -26,44 +26,44 @@ export default async function AdminAnalyticsPage() {
     .limit(10);
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-2xl font-bold">Analytics</h1>
+    <div className="space-y-6 sm:space-y-8">
+      <h1 className="text-xl font-bold sm:text-2xl">Analytics</h1>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Events by type (last 30 days)</CardTitle>
-          <CardDescription>Usage and activity</CardDescription>
+        <CardHeader className="px-4 sm:px-6">
+          <CardTitle className="text-base sm:text-lg">Events by type (last 30 days)</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">Usage and activity</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 sm:px-6">
           <ul className="space-y-2">
             {Object.entries(byType).map(([type, count]) => (
-              <li key={type} className="flex justify-between text-sm">
-                <span>{type}</span>
-                <span>{count}</span>
+              <li key={type} className="flex flex-wrap justify-between gap-x-2 text-xs sm:text-sm">
+                <span className="min-w-0 break-words">{type}</span>
+                <span className="shrink-0">{count}</span>
               </li>
             ))}
             {Object.keys(byType).length === 0 && (
-              <li className="text-muted-foreground text-sm">No events yet.</li>
+              <li className="text-sm text-muted-foreground">No events yet.</li>
             )}
           </ul>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Recent requirements</CardTitle>
-          <CardDescription>Latest submissions</CardDescription>
+        <CardHeader className="px-4 sm:px-6">
+          <CardTitle className="text-base sm:text-lg">Recent requirements</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">Latest submissions</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 sm:px-6">
           <ul className="space-y-2">
             {(recentRequirements ?? []).map((r) => (
-              <li key={r.id} className="flex justify-between text-sm">
+              <li key={r.id} className="flex flex-wrap justify-between gap-x-2 text-xs sm:text-sm">
                 <span className="font-mono">{r.id.slice(0, 8)}...</span>
-                <span className="text-muted-foreground">{format(new Date(r.created_at), 'PP')}</span>
+                <span className="shrink-0 text-muted-foreground">{format(new Date(r.created_at), 'PP')}</span>
               </li>
             ))}
             {(recentRequirements ?? []).length === 0 && (
-              <li className="text-muted-foreground text-sm">No requirements yet.</li>
+              <li className="text-sm text-muted-foreground">No requirements yet.</li>
             )}
           </ul>
         </CardContent>
