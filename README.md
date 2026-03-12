@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# deepacode
 
-## Getting Started
+Smart Multi-Cloud Recommendation & Cost Optimization Platform
 
-First, run the development server:
+A production-grade SaaS platform where businesses enter infrastructure requirements and receive intelligent recommendations for **AWS, Azure, and GCP**—including recommended services, cost estimation, and a cloud adoption roadmap.
+
+## Tech stack
+
+- **Next.js 14** (App Router)
+- **TypeScript**
+- **Tailwind CSS v3**
+- **Supabase** (PostgreSQL, Auth, RLS)
+- **React Hook Form** + **Zod**
+- **Recharts** (ready for analytics)
+- **Stripe** (payment integration ready)
+
+## Getting started
+
+### 1. Environment
+
+Copy `.env.example` to `.env.local` and set:
+
+- `NEXT_PUBLIC_SUPABASE_URL` – Supabase project URL  
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` – Supabase anon key  
+- `NEXT_PUBLIC_APP_URL` – App URL (e.g. `http://localhost:3000`)  
+- Optional: Stripe keys for payments
+
+### 2. Database
+
+The Supabase project already has the cloud platform schema applied (requirements, recommendations, cloud_services, cases, payments, analytics_events, RLS). To seed the cloud services knowledge base, run the SQL in `supabase/seed_cloud_services.sql` in the Supabase SQL editor.
+
+If you use a **new** Supabase project, create a `profiles` table that extends `auth.users` (id, name, phone, role) and add a trigger to insert a row into `profiles` on `auth.users` insert so new signups get a profile with `role = 'user'`.
+
+### 3. Create users (optional)
+
+- **Admin:** `node --env-file=.env.local scripts/create-admin.mjs`
+- **Enterprise plan user:** `node --env-file=.env.local scripts/create-enterprise-user.mjs` — creates a user with `subscription_plan: enterprise` and a succeeded payment record; report page shows Full architecture design, Migration plan, and Priority support sections.
+
+### 4. Run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Core modules
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Module | Description |
+|--------|-------------|
+| **Auth** | Supabase Auth, role-based access (user / admin), session middleware |
+| **Requirement collection** | Prompt input + guided questionnaire, saved to DB |
+| **Cloud knowledge base** | Tables for AWS/Azure/GCP services (see `cloud_services`) |
+| **Recommendation engine** | Analyzes requirements, suggests provider, services, cost, roadmap |
+| **Cost estimation** | Monthly cost breakdown per service |
+| **Adoption roadmap** | Step-by-step infrastructure setup guide |
+| **Historical cases** | Store/detect similar cases (table: `cases`) |
+| **Payments** | Subscription plans; checkout API placeholder for Stripe |
+| **Admin** | Dashboard, analytics, cloud services management (admin role only) |
 
-## Learn More
+## Pages
 
-To learn more about Next.js, take a look at the following resources:
+- `/` – Landing  
+- `/login`, `/register` – Auth  
+- `/dashboard` – User dashboard, list of requirements  
+- `/requirements/new` – Requirement form (prompt + questionnaire)  
+- `/recommendations/[id]` – Recommendation report (provider, cost, roadmap)  
+- `/payment` – Subscription plans  
+- `/payment/success` – Post-payment success  
+- `/admin` – Admin dashboard (admin only)  
+- `/admin/analytics` – Analytics (admin only)  
+- `/admin/cloud-services` – Cloud services list (admin only)  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Security
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Row Level Security (RLS) on all cloud platform tables  
+- Auth-protected routes via middleware  
+- Admin routes protected in layout (profile.role === 'admin')  
 
-## Deploy on Vercel
+## Stripe
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Checkout is wired to `/api/checkout?plan=pro|enterprise`. Replace the placeholder in `src/app/api/checkout/route.ts` with a real Stripe Checkout Session and redirect to `session.url`.
